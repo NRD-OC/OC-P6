@@ -64,6 +64,23 @@ subprocess.run(["apt-get", "update"])
 subprocess.run(["apt-get", "-y", "upgrade"])
 subprocess.run(["apt-get", "-y", "install", "apache2"])
 
+if port == "443":
+    ssl_directory = "/etc/ssl/www/"
+    key = "certificat.key"
+    csr = "certificat.csr"
+    crt = "certificat.crt"
+    subprocess.run(["openssl", "genrsa", "-out", key, "4096"])
+    subprocess.run(["openssl", "req", "-new", "-key", key, "-out", csr])
+    subprocess.run(["openssl", "x509", "-req", "-days", "365", "-in", csr, "-signkey", key, "-out", crt])
+    subprocess.run(["mkdir", ssl_directory])
+    subprocess.run(["cp", key, ssl_directory])
+    subprocess.run(["cp", crt, ssl_directory])
+    subprocess.run(["a2enmod", "ssl"])
+    vhost.insert(8, "")
+    vhost.insert(8, "SSLCertificateKeyFile " + ssl_directory + key)
+    vhost.insert(8, "SSLCertificateFile " + ssl_directory + crt)
+    vhost.insert(8, "SSLEngine on")
+
 subprocess.run(["mkdir", web_directory])
 create_file(apache_conf, vhost)
 create_file(index_html, page)
