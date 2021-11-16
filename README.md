@@ -7,7 +7,9 @@ Il devrait également fonctionner (mais n'a pas été testé) sur un serveur Deb
 
 Le fichier du programme est "install_apache.py".
 Dans la mesure où le programme modifie le système, il doit être exécuté en root (via un sudo sous Ubuntu).
+
 Par exemple :
+
 $ sudo python3 install_apache.py https://mon_site_web.local
 
 Le programme effectue les actions suivantes :
